@@ -1,1 +1,1 @@
-# HQ-OS
+# Canary

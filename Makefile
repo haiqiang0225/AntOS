@@ -45,7 +45,7 @@ clean:
 	
 .PHONY:update_image
 update_image:
-	sudo mount floppy,img /mnt/kernel
+	sudo mount floppy.img /mnt/kernel
 	sudo cp hx_kernel /mnt/kernel/K_kernel
 	sleep 1
 	sudo umount /mnt/kernel

@@ -3,7 +3,7 @@
 C_SOURCES = $(shell find . -name "*.c")
 C_OBJECTS = $(patsubst %.c, %.o, $(C_SOURCES))
 S_SOURCES = $(shell find . -name "*.s")
-S_OBJECTS = $(patsubst %.c, %.o, $(S_SOURCES))
+S_OBJECTS = $(patsubst %.s, %.o, $(S_SOURCES))
 
 
 CC = gcc
@@ -36,7 +36,7 @@ all : $(S_OBJECTS) $(C_OBJECTS) link update_image
 	$(ASM) $(ASM_FLAGS) $<
 
 link:
-	@echo link kernel file ...
+	@echo 链接内核文件...
 	$(LD) $(LD_FLAGS) $(S_OBJECTS) $(C_OBJECTS) -o K_kernel
 
 .PHONY:clean

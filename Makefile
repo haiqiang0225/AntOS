@@ -15,6 +15,7 @@ ASM = nasm
 # -nostdinc 不要在标准系统目录查找头文件，只在-I选项后指定的路径查找
 # -fno-pic
 # -fno-builtin 不使用不以”__builtin_“为起始的内建函数
+# -fno-stack-protector 不使用栈保护等检测
 # -I 指定头文件路径
 C_FLAGS = -c -Wall -m32 -ggdb -gstabs+ -nostdinc -fno-pic -fno-builtin -fno-stack-protector -I include
 # -T 使用指定的链接脚本 -m elf_i386 生成i386平台下的elf格式可执行文件 -nostdlib 不链接C语言的标准库

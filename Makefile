@@ -23,7 +23,7 @@ LD_FLAGS = -T scripts/kernel.ld -m elf_i386 -nostdlib
 # -f 指定输出文件的格式 -g 允许生成调试信息 -F 选择调试信息的格式
 ASM_FLAGS = -f elf -g -F stabs
 
-all : $(S_OBJECTS) $(C_OBJECTS)
+all : $(S_OBJECTS) $(C_OBJECTS) link update_image
 
 
 # 这个标签等价于 %.o:%.c

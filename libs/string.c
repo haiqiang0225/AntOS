@@ -54,7 +54,7 @@ inline char* strcat(char* dest, const char* src)
 
 inline int strlen(const char* src)
 {
-    char* end = src;
+    char* end = (char *)src;
     while (*end++)
         ;
 

@@ -2,6 +2,7 @@
 #include "debug.h"
 #include "gdt.h"
 #include "idt.h"
+#include "timer.h"
 
 int kern_entry()
 {
@@ -15,8 +16,11 @@ int kern_entry()
 
     // panic("test");
 
-    asm volatile("int $0x3");
-    asm volatile("int $0x4");
+    // asm volatile("int $0x3");
+    // asm volatile("int $0x4");
+    init_timer(200);
+
+    asm volatile("sti");
 
     return 0;
 }

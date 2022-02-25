@@ -8,6 +8,7 @@
 #ifndef TRUE
     #define TRUE    1
     #define FALSE   0
+    typedef int bool;
 #endif
 
 typedef unsigned int    uint32_t;

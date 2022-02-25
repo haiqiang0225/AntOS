@@ -40,6 +40,8 @@ void init_pmm()
     {
 
         // 如果是可用内存 ( 按照协议，1 表示可用内存，其它数字指保留区域 )
+        // 观察mmap的值可以看到，base_addr=0x000100000，length=0x007EFE00的内存段是可用的
+        // 因此才有后面的判断
         if (map_entry->type == 1 && map_entry->base_addr_low == 0x100000)
         {
 

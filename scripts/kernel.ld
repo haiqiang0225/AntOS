@@ -40,7 +40,7 @@ SECTIONS
         . = ALIGN(4096);
     }
 
-    PROVIDE(kern_end = .)
+    PROVIDE(kern_end = .);
 
     /DISCARD/ : { *(.comment) *(.eh_frame) }
 }

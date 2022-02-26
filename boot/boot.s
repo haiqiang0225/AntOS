@@ -23,7 +23,7 @@ MBOOT_CHECKSUm      equ     -(MBOOT_HEADER_MAGIC + MBOOT_HEADER_FLAGES)
 
 ; --------------------------------------------------------------------------------------
 [BITS 32]   ; 以32位方式编译代码
-section .text   ; 代码段开始
+section .init.text   ; 代码段开始
 
 ; 设置符合Multiboot 规范的标记
 
@@ -32,15 +32,16 @@ dd MBOOT_HEADER_FLAGES  ; GRUB选项
 dd MBOOT_CHECKSUm       ; GRUB检验和
 
 [GLOBAL start]          ; 声明内核代码入口，此处提供该生命给链接器
-[GLOBAL glb_mboot_ptr]  ; 向外部声明 struct multiboot * 变量
+[GLOBAL mboot_ptr_tmp]  ; 向外部声明 struct multiboot * 变量
 [EXTERN kern_entry]     ; 声明内核C代码的入口函数
 
 start:
     cli                         ; 关中断
-    mov esp, STACK_TOP          ; 设置内核栈地址
-    mov ebp, 0                  ; 设置帧指针为0
-    and esp, 0FFFFFFF0H         ; 栈地址按照16字节对齐
-    mov [glb_mboot_ptr], ebx    ; 将ebx中储存的指针存入全局变量
+    mov [mboot_ptr_tmp], ebx    ; 将 ebx 中存储的指针存入 glb_mboot_ptr 变量
+    mov esp, STACK_TOP          ; 设置内核栈地址，按照 multiboot 规范，当需要使用堆栈时，OS 映象必须自己创建一个
+    and esp, 0FFFFFFF0H         ; 栈地址按照 16 字节对齐
+    mov ebp, 0                  ; 帧指针修改为 0
+
     call kern_entry             ; 调用内核入口函数
 
 stop:
@@ -49,14 +50,11 @@ stop:
 
 ; --------------------------------------------------------------------------------------
 
-section .bss                    ; 未初始化的数据段从这里开始
-stack:
-    resb 32768                  ; 作为内核栈， reserve byte
+section .init.data		    ; 开启分页前临时的数据段
+stack:    times 1024 db 0  	; 这里作为临时内核栈
+STACK_TOP equ $-stack-1 	; 内核栈顶，$ 符指代是当前地址
 
-glb_mboot_ptr:                  ; 作为全局的 multiboot 结构体指针
-    resb 4
-
-STACK_TOP   equ     $-stack-1   ; 内核栈顶， $指的是当前的地址
+mboot_ptr_tmp: dd 0		    ; 全局的 multiboot 结构体指针
 
 ; --------------------------------------------------------------------------------------
 

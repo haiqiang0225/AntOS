@@ -10,8 +10,9 @@ void timer_callback(pt_regs *regs)
 {
     static uint32_t tick = 0;
 
-    if (debug_mode == TRUE) 
-        printk_color(rc_black, rc_red, "Tick: %d\n", tick++);
+    if (debug_mode == TRUE) {
+        //printk_color(rc_black, rc_red, "Tick: %d\n", tick++);
+    } 
 }
 
 void init_timer(uint32_t frequency)

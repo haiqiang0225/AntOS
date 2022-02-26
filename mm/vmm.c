@@ -64,23 +64,23 @@ void map(pgd_t* pgd_now, uint32_t va, uint32_t pa, uint32_t flags)
     uint32_t pte_idx = PTE_INDEX(va);
 
     // 从页目录中获取对应的页表
-    pte_t* pte = (pte_t*)(pgd_now[pgd_idx] & PAGE_MASK);
-    if (!pte) { // 如果这个页表还未分配
+    pte_t* pt = (pte_t*)(pgd_now[pgd_idx] & PAGE_MASK);
+    if (!pt) { // 如果这个页表还未分配
         // 分配一个物理内存页
-        pte = (pte_t*)pmm_alloc_page();
+        pt = (pte_t*)pmm_alloc_page();
 
         // 将这个物理页的基址和对应的标志位写入到页目录中
-        pgd_now[pgd_idx] = (uint32_t)pte | PAGE_PRESENT | PAGE_WRITE;
+        pgd_now[pgd_idx] = (uint32_t)pt | PAGE_PRESENT | PAGE_WRITE;
 
         // 转换到内核线性地址并清 0
-        pte = (pte_t*)((uint32_t)pte + PAGE_OFFSET);
-        bzero(pte, PAGE_SIZE);
+        pt = (pte_t*)((uint32_t)pt + PAGE_OFFSET);
+        bzero(pt, PAGE_SIZE);
     } else {
         // 转换到内核线性地址
-        pte = (pte_t*)((uint32_t)pte + PAGE_OFFSET);
+        pt = (pte_t*)((uint32_t)pt + PAGE_OFFSET);
     }
 
-    pte[pte_idx] = (pa & PAGE_MASK) | flags;
+    pt[pte_idx] = (pa & PAGE_MASK) | flags;
 
     // 通知 CPU 更新页表缓存
     asm volatile("invlpg (%0)"

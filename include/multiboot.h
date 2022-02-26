@@ -63,7 +63,11 @@ typedef struct mmap_entry_t
     uint32_t type;
 } __attribute__((packed)) mmap_entry_t;
 
+// 未开启分页机制时使用的指针
+extern multiboot_t *mboot_ptr_tmp;
+
 // 声明全局的 multiboot_t * 指针
+// 内核页表建立后使用该指针
 extern multiboot_t *glb_mboot_ptr;
 
 #endif // INCLUDE_MULTIBOOT_H_

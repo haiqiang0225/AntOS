@@ -1,6 +1,7 @@
 #include "console.h"
 #include "debug.h"
 #include "gdt.h"
+#include "heap.h"
 #include "idt.h"
 #include "pmm.h"
 #include "string.h"
@@ -109,6 +110,10 @@ void kern_init()
     printk_color(rc_black, rc_light_brown, "Alloc Physical Addr: 0x%08X\n", allc_addr);
     allc_addr = pmm_alloc_page();
     printk_color(rc_black, rc_light_brown, "Alloc Physical Addr: 0x%08X\n", allc_addr);
+
+    init_heap();
+    
+    test_heap();
 
     while (1) {
         asm volatile("hlt");

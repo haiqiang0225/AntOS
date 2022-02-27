@@ -13,7 +13,7 @@ extern struct task_struct *wait_proc_head;
 extern struct task_struct *current;
 
 // 初始化任务调度
-void init_sched();
+void init_sched(uint32_t);
 
 // 任务调度
 void schedule();

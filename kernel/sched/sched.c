@@ -11,9 +11,8 @@ struct task_struct *wait_proc_head = NULL;
 // 当前运行的任务
 struct task_struct *current = NULL;
 
-extern uint32_t kern_stack_top;
 
-void init_sched()
+void init_sched(uint32_t kern_stack_top)
 {
 	// 为当前执行流创建信息结构体 该结构位于当前执行流的栈最低端
 	current = (struct task_struct *)(kern_stack_top - STACK_SIZE);

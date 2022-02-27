@@ -69,6 +69,7 @@ typedef uint32_t pte_t;
 // 内核页目录区域
 extern pgd_t pgd_kern[PGD_SIZE];
 
+
 // 初始化虚拟内存管理
 void init_vmm();
 

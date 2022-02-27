@@ -20,7 +20,7 @@ multiboot_t* glb_mboot_ptr;
 // 开启分页机制后的内核栈
 char kern_stack[STACK_SIZE];
 
-extern uint32_t kern_stack_top;
+static uint32_t kern_stack_top;
 
 // 内核使用的临时页表和页目录
 // 该地址必须是页对齐的地址，内存 0-640KB 肯定是空闲的
@@ -123,7 +123,7 @@ void kern_init()
 
     // test_heap();
 
-    init_sched();
+    init_sched(kern_stack_top);
     
 
     while (1) {

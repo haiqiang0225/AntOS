@@ -26,6 +26,7 @@ bool debug_mode = TRUE;
 
 __attribute__((section(".init.text"))) void kern_entry()
 {
+    // 设置临时页表项
     pgd_tmp[0] = (uint32_t)pte_low | PAGE_PRESENT | PAGE_WRITE;
     pgd_tmp[PGD_INDEX(PAGE_OFFSET)] = (uint32_t)pte_hign | PAGE_PRESENT | PAGE_WRITE;
 
@@ -50,7 +51,7 @@ __attribute__((section(".init.text"))) void kern_entry()
     // 启用分页，将 cr0 寄存器的分页位置为 1 就好
     asm volatile("mov %%cr0, %0"
                  : "=r"(cr0));
-    cr0 |= 0x80000000;
+    cr0 |= 0x80000000; // cr0寄存器的最高位是开启分页机制的标志位
     asm volatile("mov %0, %%cr0"
                  :
                  : "r"(cr0));
@@ -58,11 +59,12 @@ __attribute__((section(".init.text"))) void kern_entry()
     // 切换内核栈
     uint32_t kern_stack_top = ((uint32_t)kern_stack + STACK_SIZE) & 0xFFFFFFF0;
     asm volatile("mov %0, %%esp\n\t"
-                 "xor %%ebp, %%ebp"
+                 "xor %%ebp, %%ebp" // mark: 检测是否发生栈溢出?
                  :
                  : "r"(kern_stack_top));
 
-    // 更新全局 multiboot_t 指针
+    // 此时已经开启虚拟地址机制，因此更新全局 multiboot_t 指针地址
+    // 为虚拟地址才能正确的访问
     glb_mboot_ptr = mboot_ptr_tmp + PAGE_OFFSET;
 
     // 调用内核初始化函数

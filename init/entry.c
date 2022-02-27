@@ -125,6 +125,19 @@ void kern_init()
 
     init_sched(kern_stack_top);
     
+    kernel_thread(thread, NULL);
+
+	// 开启中断
+	enable_intr();
+
+	while (1) {
+		if (flag == 0) {
+			printk_color(rc_black, rc_red, "A");
+			flag = 1;
+		}
+	}
+
+    printk_color(rc_black, rc_cyan, "\nkern init finished!");
 
     while (1) {
         asm volatile("hlt");

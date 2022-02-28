@@ -10,6 +10,7 @@
 #include "timer.h"
 #include "types.h"
 #include "vmm.h"
+#include "common.h"
 
 // 内核初始化函数
 void kern_init();

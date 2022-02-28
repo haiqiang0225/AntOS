@@ -50,7 +50,11 @@ int32_t kernel_thread(int (*fn)(void*), void* arg)
 
 void kthread_exit()
 {
-    register uint32_t val asm("eax");
+    register uint32_t val;
+
+    asm volatile("mov %0, %%eax"
+                 : "=r"(val)
+                 :);
 
     printk("Thread exited with value %d\n", val);
 
